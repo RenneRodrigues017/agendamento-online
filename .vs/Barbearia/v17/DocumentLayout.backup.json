@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\renne\\OneDrive\\Desktop\\Renne\\Barbearia\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|c:\\users\\renne\\onedrive\\desktop\\renne\\barbearia\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|c:\\users\\renne\\onedrive\\desktop\\renne\\barbearia\\views\\servicos\\registrarservicos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|solutionrelative:views\\servicos\\registrarservicos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|c:\\users\\renne\\onedrive\\desktop\\renne\\barbearia\\views\\agendamento\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|solutionrelative:views\\agendamento\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|c:\\users\\renne\\onedrive\\desktop\\renne\\barbearia\\views\\servicos\\registrarservicos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|solutionrelative:views\\servicos\\registrarservicos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|c:\\users\\renne\\onedrive\\desktop\\renne\\barbearia\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{70C1527F-4089-4DA9-AD98-D5ED33F645B1}|Barbearia.csproj|c:\\users\\renne\\onedrive\\desktop\\renne\\barbearia\\models\\viewsmodels\\configura\u00E7aoviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -190,7 +190,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -210,13 +210,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "RegistrarServicos.cshtml",
               "DocumentMoniker": "C:\\Users\\renne\\OneDrive\\Desktop\\Renne\\Barbearia\\Views\\Servicos\\RegistrarServicos.cshtml",
               "RelativeDocumentMoniker": "Views\\Servicos\\RegistrarServicos.cshtml",
               "ToolTip": "C:\\Users\\renne\\OneDrive\\Desktop\\Renne\\Barbearia\\Views\\Servicos\\RegistrarServicos.cshtml",
               "RelativeToolTip": "Views\\Servicos\\RegistrarServicos.cshtml",
-              "ViewState": "AgIAADMCAAAAAAAAAAAAALwCAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAAMsAAAAAAAAAAAAswNMAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-12-17T01:34:05.435Z",
               "EditorCaption": ""
@@ -265,14 +265,14 @@
               "RelativeDocumentMoniker": "Views\\Agendamento\\Index.cshtml",
               "ToolTip": "C:\\Users\\renne\\OneDrive\\Desktop\\Renne\\Barbearia\\Views\\Agendamento\\Index.cshtml",
               "RelativeToolTip": "Views\\Agendamento\\Index.cshtml",
-              "ViewState": "AgIAALYBAAAAAAAAAAAwwIMCAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAG4CAAAAAAAAAAAwwIMCAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-12-17T21:44:27.176Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\renne\\OneDrive\\Desktop\\Renne\\Barbearia\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",

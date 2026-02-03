@@ -61,6 +61,24 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        // Troque 'SeuDbContext' pelo nome real da sua classe de contexto
+        var context = services.GetRequiredService<AppDbContext>(); 
+        
+        Console.WriteLine("--> Verificando Migrations pendentes...");
+        context.Database.Migrate();
+        Console.WriteLine("--> Banco de dados atualizado com sucesso!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"--> Erro ao aplicar migrations: {ex.Message}");
+    }
+}
+
 // ... (bloco do scope/migrações omitido para brevidade, mantém igual)
 
 if (!app.Environment.IsDevelopment())
