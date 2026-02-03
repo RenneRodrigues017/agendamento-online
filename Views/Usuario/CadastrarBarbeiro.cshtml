@@ -1,0 +1,59 @@
+﻿@model Barbearia.Models.ViewsModels.BarbeiroRegisterViewModel
+
+@{
+    ViewData["Title"] = "Novo Barbeiro";
+}
+
+<h1>Cadastrar Novo Barbeiro</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CadastrarBarbeiro" asp-controller="Usuario">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" placeholder="Digite o nome completo" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="NomeBarbearia" class="control-label"></label>
+                <input asp-for="NomeBarbearia" class="form-control" placeholder="Nome da empresa/barbearia" />
+                <span asp-validation-for="NomeBarbearia" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Endereco" class="control-label">Endereço Completo</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                    <input asp-for="Endereco" class="form-control" placeholder="Rua, número, bairro e cidade" />
+                </div>
+                <span asp-validation-for="Endereco" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" type="email" placeholder="email@exemplo.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Senha" class="control-label"></label>
+                <input asp-for="Senha" class="form-control" type="password" />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Cadastrar Barbeiro" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,218 @@
+@model List<Agendamento>
+
+<style>
+    /* ===============================
+   AGENDAMENTOS – VISUAL PREMIUM
+================================ */
+
+/* Card principal do agendamento */
+.agendamento-card {
+    background: #ffffff;
+    border-radius: 22px;
+    border: 1px solid rgba(13, 110, 253, 0.08);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.06),
+        0 1px 0 rgba(255, 255, 255, 0.9) inset;
+    transition: 
+        transform 0.35s ease,
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
+    animation: agendamentoFadeIn 0.45s ease;
+}
+
+.agendamento-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(13, 110, 253, 0.35);
+    box-shadow:
+        0 18px 45px rgba(13, 110, 253, 0.18),
+        0 0 0 1px rgba(13, 110, 253, 0.1);
+}
+
+/* Animação de entrada */
+@@keyframes agendamentoFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===============================
+   BLOCO DE DATA
+================================ */
+
+.data-box {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #0d6efd, #3d8bfd);
+    border-radius: 18px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow:
+        0 8px 20px rgba(13, 110, 253, 0.35);
+}
+
+.data-box .dia {
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.data-box .mes {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    opacity: 0.9;
+}
+
+/* ===============================
+   TEXTO / INFORMAÇÕES
+================================ */
+
+.agendamento-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.agendamento-info .hora {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #212529;
+}
+
+.agendamento-info .profissional {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* ===============================
+   STATUS (BADGES)
+================================ */
+
+.status-badge {
+    padding: 0.45em 0.9em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 3px 8px rgba(0,0,0,.08);
+}
+
+/* ===============================
+   BOTÃO CANCELAR
+================================ */
+
+.agendamento-card .btn-outline-danger {
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.agendamento-card .btn-outline-danger:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 18px rgba(220, 53, 69, 0.25);
+}
+
+/* ===============================
+   RESPONSIVO
+================================ */
+
+@@media (max-width: 768px) {
+    .data-box {
+        width: 56px;
+        height: 56px;
+    }
+
+    .agendamento-info .hora {
+        font-size: 1rem;
+    }
+}
+
+</style>
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center rounded-4">
+        <i class="bi bi-calendar-x me-2"></i>
+        Nenhum agendamento encontrado.
+    </div>
+}
+else
+{
+    <div class="row g-3">
+
+        @foreach (var ag in Model)
+        {
+            <div class="col-12">
+                <div class="card agendamento-card border-0 shadow-sm">
+                    <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+
+                        <!-- DATA / HORA -->
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="data-box text-center">
+                                <span class="dia">@ag.Horario.ToString("dd")</span>
+                                <span class="mes">@ag.Horario.ToString("MMM").ToUpper()</span>
+                            </div>
+
+                            <div>
+                                <div class="fw-bold fs-5">
+                                    <i class="bi bi-clock me-1 text-primary"></i>
+                                    @ag.Horario.ToString(@"HH\:mm")
+                                </div>
+                                <div class="text-white-50 small">
+                                    <i class="bi bi-scissors me-1"></i>
+                                    @ag.Profissional?.Nome
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STATUS -->
+                        <div>
+                            @switch (ag.Status)
+                            {
+                                case StatusAgendamento.Pendente:
+                                    <span class="badge status-badge bg-warning text-dark">Pendente</span>
+                                    break;
+                                case StatusAgendamento.Confirmado:
+                                    <span class="badge status-badge bg-info">Confirmado</span>
+                                    break;
+                                case StatusAgendamento.Concluido:
+                                    <span class="badge status-badge bg-success">Concluído</span>
+                                    break;
+                                default:
+                                    <span class="badge status-badge bg-danger">Cancelado</span>
+                                    break;
+                            }
+                        </div>
+
+                        <!-- AÇÃO -->
+                        <div>
+                            @if (ag.Status == StatusAgendamento.Pendente || ag.Status == StatusAgendamento.Confirmado)
+                            {
+                                <button class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                        onclick="cancelarAgendamento('@ag.Id')">
+                                    <i class="bi bi-x-circle me-1"></i>
+                                    Cancelar
+                                </button>
+                            }
+                            else
+                            {
+                                <span class="text-muted small">Sem ações</span>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+}

@@ -1,0 +1,2551 @@
+﻿@model Barbearia.Models.ViewsModels.ConfiguracaoViewModel
+
+@{
+    ViewData["Title"] = "Configurações - AgendaPrime";
+}
+
+
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            background: '#0d6efd',
+            color: '#fff'
+        });
+        Toast.fire({ icon: 'success', title: '@TempData["MensagemSucesso"]' });
+    </script>
+}
+
+<!-- HEADER ADMIN -->
+<header class="prime-header-admin fixed-top">
+    <div class="container d-flex justify-content-between align-items-center">
+        <strong class="text-primary-prime">AgendaPrime</strong>
+
+        <a href="/Account/Login" class="btn btn-sm btn-outline-light rounded-pill">
+            <i class="bi bi-box-arrow-left"></i> Sair
+        </a>
+    </div>
+</header>
+
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+<style>
+
+    body {
+        background: linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.9)), url('https://images.unsplash.com/photo-1512690196236-4bab3b702b1f?auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    :root {
+        --prime-header-height: 64px;
+    }
+
+    /* HEADER ADMIN */
+    .prime-header-admin {
+        height: var(--prime-header-height);
+        background: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        z-index: 1030;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Empurra o conteúdo */
+    body {
+        padding-top: var(--prime-header-height);
+    }
+
+
+    .admin-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+    }
+
+    .form-control, .form-select {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: #fff !important;
+    }
+
+    .btn-prime {
+        background: #0d6efd;
+        color: white;
+        border-radius: 10px;
+        font-weight: 600;
+        border: none;
+    }
+
+    .text-primary-prime {
+        color: #0d6efd !important;
+    }
+
+    .badge-time {
+        background: rgba(13, 110, 253, 0.2);
+        color: #0d6efd;
+        border: 1px solid rgba(13, 110, 253, 0.3);
+    }
+
+    /* Efeito suave nos botões de lixeira */
+
+    .btn-delete-prime {
+        color: rgba(220, 53, 69, 0.6); /* Vermelho fosco inicial */
+
+        transition: all 0.3s ease;
+        padding: 5px 10px;
+        border-radius: 8px;
+        background: transparent;
+        border: none;
+    }
+
+        .btn-delete-prime:hover {
+            color: #ff4d5e !important; /* Vermelho vivo ao passar o mouse */
+
+            background: rgba(220, 53, 69, 0.1); /* Fundo levemente avermelhado */
+
+            transform: scale(1.2); /* Aumenta levemente o ícone */
+
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.2);
+        }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    /* Scrollbar estilizada para a lista de horários */
+
+    .table-responsive::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: #0d6efd;
+        border-radius: 10px;
+    }
+
+    .extra-small {
+        font-size: 0.7rem;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .btn-menu-prime {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        padding: 15px 25px;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        text-align: center;
+        flex: 1;
+        min-width: 200px;
+        outline: none !important;
+    }
+
+        .btn-menu-prime.collapsed {
+            background-color: #f8f9fa !important;
+            color: #333 !important;
+        }
+
+        .btn-menu-prime:hover {
+            background: rgba(13, 110, 253, 0.1);
+            border-color: #0d6efd;
+            color: #0d6efd;
+            transform: translateY(-5px);
+        }
+
+        .btn-menu-prime:not(.collapsed),
+        .btn-menu-prime.active {
+            background-color: #0d6efd !important; /* Azul do Bootstrap */
+            color: white !important;
+            border-color: #0d6efd !important;
+            box-shadow: 0 0 15px rgba(13, 110, 253, 0.4);
+        }
+
+        .btn-menu-prime i {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* Estilo para quando o botão estiver ativo (aberto) */
+        .btn-menu-prime:not(.collapsed) {
+            background: #0d6efd;
+            color: white;
+            box-shadow: 0 0 20px rgba(13, 110, 253, 0.4);
+        }
+
+    #pills-tab {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: #0d6efd !important;
+        color: white !important;
+        border-color: #0d6efd !important;
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+
+    .nav-pills .nav-link:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    #tabelaFaturamento thead th {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 15px;
+    }
+
+    #tabelaFaturamento tbody td {
+    font-size: 0.85rem;
+    }
+    #tabelaFaturamento tbody tr:hover {
+    background: rgba(13,110,253,0.08);
+    transition: background 0.2s ease;
+    }
+
+    .admin-card {
+        background: #1a1a1a; /* Cor de fundo escura combinando com seu tema */
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    /* --- AJUSTES EXCLUSIVOS PARA MOBILE --- */
+    @@media (max-width: 767.98px) {
+        /* 1. Organização do Menu em Grade 3x2 ou 3x3 */
+        #menu-admin-prime {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr); /* Força 3 colunas iguais */
+            gap: 8px !important; /* Espaçamento entre os botões */
+            padding: 10px 0 !important;
+        }
+
+        .btn-menu-prime {
+            min-width: unset !important; /* Remove a largura mínima que causava o scroll */
+            max-width: 100% !important;
+            width: 100% !important;
+            padding: 12px 5px !important; /* Ajusta o respiro interno */
+            font-size: 10px !important; /* Diminui a fonte para caber em telas pequenas */
+            margin: 0 !important;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px !important;
+        }
+
+        .btn-menu-prime i {
+            font-size: 1.1rem !important; /* Ícone um pouco menor para dar equilíbrio */
+            margin-bottom: 5px !important;
+        }
+
+        /* 2. Comportamento da Janela (Mantido como solicitado anteriormente) */
+        .collapse.show {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100vh !important;
+            z-index: 1040; /* ABAIXO do modal */
+            background: #121212;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .collapse.show .row {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        .modal {
+        z-index: 1055 !important;
+        }
+
+        .modal-backdrop {
+            z-index: 1050 !important;
+        }
+
+        .select-barbeiro-prime {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        }
+
+        /* Container das ações */
+        .acoes-mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* ALINHA COM O TÍTULO AÇÕES */
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Concluir (azul) */
+        .btn-acao-concluir {
+            width: 36px;
+            height: 36px;
+            padding: 0 !important;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background-color: #198754 !important; /* Bootstrap green */
+            border: none;
+
+            box-shadow: 0 0 12px rgba(25, 135, 84, 0.7);
+            transition: all 0.25s ease;
+        }
+
+        .btn-acao-concluir:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(25, 135, 84, 0.9);
+        }
+
+        .btn-acao-concluir i {
+            font-size: 15px;
+            color: #fff;
+        }
+
+
+        .btn-acao-cancelar {
+            padding: 4px 12px;
+            font-size: 11px;
+            border-radius: 8px;
+
+            background-color: #dc3545;
+            border: none;
+
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.6);
+            transition: all 0.25s ease;
+        }
+
+        .btn-acao-cancelar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 18px rgba(220, 53, 69, 0.85);
+        }
+
+    }
+    /* Força o conteúdo do collapse a ocupar 100% da largura no container Flex */
+    #menu-admin-prime + .collapse,
+    .collapse.show,
+    .collapsing {
+        width: 100%;
+        flex-basis: 100%;
+    }
+    .swal2-container {
+    z-index: 1061 !important; /* Modais do Bootstrap usam 1055-1060 */
+}
+body.swal2-shown {
+    overflow: hidden !important;
+}
+
+.collapse-close {
+    background: #0d6efd;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 12px;
+}
+/* ===============================
+   SELECT BARBEIRO - ESTILO PRIME
+================================ */
+
+.select-barbeiro-prime {
+    background-color: #0d6efd !important; /* Azul do projeto */
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px;
+    padding: 12px 40px 12px 15px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.35);
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    /* Remove estilo padrão */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Seta personalizada */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 14px;
+}
+
+/* Hover */
+.select-barbeiro-prime:hover {
+    background-color: #0b5ed7 !important;
+    box-shadow: 0 0 20px rgba(13, 110, 253, 0.5);
+}
+
+/* Focus (quando clica) */
+.select-barbeiro-prime:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.4);
+    background-color: #0b5ed7 !important;
+}
+
+.select-barbeiro-prime option {
+    background-color: #121212;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Espaçamento correto do label BARBEIRO */
+.select-barbeiro-label {
+    margin-bottom: 8px;
+    padding-left: 4px;
+    display: block;
+    letter-spacing: 1px;
+}
+
+/* Container do filtro barbeiro */
+.filtro-barbeiro-container {
+    padding: 10px 8px;
+}
+
+/* Forçamos a especificidade usando o seletor de classe duplo */
+input.form-control.input-customizado {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Ajuste do placeholder para não sumir no fundo branco */
+input.form-control.input-customizado::placeholder {
+    color: #6c757d !important;
+    opacity: 1; /* Garante que apareça no Firefox */
+}
+
+/* Estilo para os campos da Agenda */
+.input-agenda {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #ced4da !important;
+    font-weight: 600;
+}
+
+/* Garante que o ícone do relógio e da seta do select fiquem visíveis */
+.input-agenda::-webkit-calendar-picker-indicator {
+    filter: invert(0); /* Mantém os ícones pretos */
+}
+
+.input-agenda:focus {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border-color: var(--primary-prime); /* Mantém a cor de destaque do seu tema no foco */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Estilo para o Input de Data e grupos relacionados */
+.input-light {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #dee2e6 !important;
+    font-weight: 500;
+}
+
+/* Estilo para a Tabela de Agendamentos */
+/* ===============================
+   TABELA AGENDA - CINZA CLARO (FIX REAL)
+================================ */
+
+.table-agenda-light {
+    background-color: #f8f9fa !important;
+    border-collapse: collapse;
+}
+
+/* Cabeçalho */
+.table-agenda-light thead th {
+    background-color: #e9ecef !important;
+    color: #495057 !important;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* LINHAS */
+.table-agenda-light tbody tr {
+    background-color: #f8f9fa !important;
+}
+
+/* CÉLULAS (ESSENCIAL) */
+.table-agenda-light tbody td {
+    background-color: #f8f9fa !important;
+    color: #212529 !important;
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* Hover */
+.table-agenda-light.table-hover tbody tr:hover td {
+    background-color: #e9ecef !important;
+}
+
+
+.badge-horario {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.35);
+    font-weight: 600;
+}
+
+/* ===============================
+   FIX FINAL - TEXTO DA TABELA CLARA
+================================ */
+
+.table-agenda-light td,
+.table-agenda-light th {
+    color: #212529 !important;
+}
+
+/* Remove textos forçados em branco dentro da tabela */
+.table-agenda-light .text-white,
+.table-agenda-light .text-white-50,
+.table-agenda-light .text-secondary {
+    color: #212529 !important;
+}
+
+/* ===============================
+   FLATPICKR - TEMA PRIME AZUL
+================================ */
+
+.flatpickr-calendar {
+    background: #121212;
+    border-radius: 16px;
+    border: 1px solid rgba(13,110,253,0.4);
+    box-shadow: 0 15px 40px rgba(13,110,253,0.35);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Cabeçalho */
+.flatpickr-months {
+    background: #0d6efd;
+    border-radius: 16px 16px 0 0;
+}
+
+.flatpickr-month {
+    color: white;
+    font-weight: 600;
+}
+
+.flatpickr-weekday {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.7rem;
+}
+
+/* Dias */
+.flatpickr-day {
+    color: white;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.flatpickr-day:hover {
+    background: rgba(13,110,253,0.25);
+}
+
+/* Hoje */
+.flatpickr-day.today {
+    border: 1px solid #0d6efd;
+}
+
+/* Selecionado */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+    background: #0d6efd;
+    color: white;
+    box-shadow: 0 0 12px rgba(13,110,253,0.6);
+}
+
+/* Dias desabilitados */
+.flatpickr-day.disabled {
+    color: rgba(255,255,255,0.25);
+}
+
+/* Setas */
+.flatpickr-prev-month svg,
+.flatpickr-next-month svg {
+    fill: white;
+}
+
+/* Mobile fullscreen */
+.flatpickr-calendar.open {
+    animation: fadeInScale 0.25s ease;
+}
+
+@@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ===============================
+   INPUT DATE - ESTILO PRIME AZUL
+================================ */
+
+.input-date-prime {
+    background-color: #0d6efd !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px;
+    padding: 12px 15px;
+    font-weight: 500;
+    font-size: 0.9rem;
+
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.35);
+    transition: all 0.25s ease;
+
+    /* Remove estilos nativos */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Ícone do calendário */
+.input-date-prime::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+    opacity: 0.9;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Hover */
+.input-date-prime:hover {
+    background-color: #0b5ed7 !important;
+    box-shadow: 0 0 20px rgba(13, 110, 253, 0.5);
+}
+
+/* Foco (clicado) */
+.input-date-prime:focus {
+    outline: none !important;
+    background-color: #0b5ed7 !important;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.4);
+}
+
+/* Efeito no ícone ao passar o mouse */
+.input-date-prime:hover::-webkit-calendar-picker-indicator {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+/* ===============================
+   FLATPICKR - DIAS DESABILITADOS VISÍVEIS
+================================ */
+
+/* Dias normais */
+.flatpickr-day {
+    color: #ffffff !important;
+}
+
+/* Dias desabilitados (passados) */
+.flatpickr-day.disabled,
+.flatpickr-day.disabled:hover {
+    color: rgba(255, 255, 255, 0.35) !important;
+    background: transparent !important;
+    cursor: not-allowed;
+}
+
+/* Dias fora do mês (cinza mais fraco ainda) */
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    color: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* Remove hover em dias desabilitados */
+.flatpickr-day.disabled:hover {
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ===============================
+   TABELA AGENDA - PRIME AZUL
+================================ */
+
+.table-agenda-blue {
+    background: rgba(13, 110, 253, 0.08) !important;
+    border-collapse: collapse;
+    backdrop-filter: blur(8px);
+}
+
+/* Cabeçalho */
+.table-agenda-blue thead th {
+    background: rgba(13, 110, 253, 0.22) !important;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15) !important;
+}
+
+/* Linhas */
+.table-agenda-blue tbody tr {
+    background: rgba(13, 110, 253, 0.10) !important;
+}
+
+/* Células */
+.table-agenda-blue tbody td {
+    background: transparent !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Hover */
+.table-agenda-blue.table-hover tbody tr:hover td {
+    background: rgba(13, 110, 253, 0.22) !important;
+}
+
+/* Remove conflitos de textos claros */
+.table-agenda-blue .text-secondary {
+    color: rgba(255,255,255,0.7) !important;
+}
+
+.agendamento-row.active td {
+    background: rgba(13,110,253,0.35) !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+
+/* ===============================
+   INPUT MONTH - FATURAMENTO PRIME
+================================ */
+
+.input-month-prime {
+    background-color: #0d6efd !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-weight: 600;
+    font-size: 0.85rem;
+
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.35);
+    transition: all 0.25s ease;
+
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+/* Ícone do calendário (Chrome, Edge) */
+.input-month-prime::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.9;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Hover */
+.input-month-prime:hover {
+    background-color: #0b5ed7 !important;
+    box-shadow: 0 0 20px rgba(13, 110, 253, 0.55);
+}
+
+/* Foco */
+.input-month-prime:focus {
+    outline: none !important;
+    background-color: #0b5ed7 !important;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.4);
+}
+
+/* Efeito no ícone */
+.input-month-prime:hover::-webkit-calendar-picker-indicator {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+/* ===============================
+   FLATPICKR MONTH - FATURAMENTO PRIME (FIX REAL)
+================================ */
+
+/* Mata o estilo genérico do Bootstrap */
+.form-control.flatpickr-input {
+    background-color: #0d6efd !important;
+    border: none !important;
+}
+
+/* ===============================
+   FIX DEFINITIVO - INPUT MONTH FATURAMENTO
+================================ */
+
+input.flatpickr-input.form-control {
+    background-color: #0d6efd !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 8px 14px !important;
+
+    font-weight: 600;
+    font-size: 0.85rem;
+
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.35) !important;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+/* Hover */
+input.flatpickr-input.form-control:hover {
+    background-color: #0b5ed7 !important;
+    box-shadow: 0 0 20px rgba(13, 110, 253, 0.55) !important;
+}
+
+/* Focus */
+input.flatpickr-input.form-control:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.4) !important;
+}
+
+/* ===============================
+   KPI / FATURAMENTO - DASHBOARD PRIME
+================================ */
+
+.kpi-card {
+    background: linear-gradient(
+        145deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.02)
+    );
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 18px;
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+
+    transition: all 0.35s ease;
+}
+
+/* Título */
+.kpi-card small {
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1.5px;
+    font-size: 0.65rem;
+    font-weight: 600;
+}
+
+/* Valor */
+.kpi-card h2,
+.kpi-card h4 {
+    margin: 6px 0 0;
+    font-weight: 700;
+}
+
+/* Hover geral */
+.kpi-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+}
+
+/* ===============================
+   CARD PRINCIPAL - MÊS
+================================ */
+
+.kpi-main {
+    background: linear-gradient(
+        145deg,
+        rgba(13,110,253,0.25),
+        rgba(13,110,253,0.05)
+    );
+    border-color: rgba(13,110,253,0.45);
+}
+
+.kpi-main h2 {
+    color: #0d6efd;
+    font-size: 2rem;
+}
+
+.kpi-main:hover {
+    box-shadow: 0 0 35px rgba(13,110,253,0.55);
+}
+
+/* ===============================
+   CARD HOJE - VERDE
+================================ */
+
+.kpi-success {
+    background: linear-gradient(
+        145deg,
+        rgba(25,135,84,0.25),
+        rgba(25,135,84,0.05)
+    );
+    border-color: rgba(25,135,84,0.45);
+}
+
+.kpi-success h4 {
+    color: #198754;
+}
+
+.kpi-success:hover {
+    box-shadow: 0 0 30px rgba(25,135,84,0.45);
+}
+
+/* ===============================
+   CARD BARBEIRO - INFO
+================================ */
+
+.kpi-info {
+    background: linear-gradient(
+        145deg,
+        rgba(13,202,240,0.25),
+        rgba(13,202,240,0.05)
+    );
+    border-color: rgba(13,202,240,0.45);
+}
+
+.kpi-info h4 {
+    color: #0dcaf0;
+}
+
+.kpi-info:hover {
+    box-shadow: 0 0 30px rgba(13,202,240,0.45);
+}
+
+/* ===============================
+   MOBILE - AJUSTES FINOS
+================================ */
+
+@@media (max-width: 767.98px) {
+
+    .kpi-card {
+        padding: 18px;
+        text-align: center;
+    }
+
+    .kpi-card h2 {
+        font-size: 1.6rem;
+    }
+
+    .kpi-card h4 {
+        font-size: 1.1rem;
+    }
+
+    .kpi-card small {
+        font-size: 0.6rem;
+    }
+}
+
+/* ===============================
+   FLATPICKR - BOTÃO FECHAR
+================================ */
+
+.flatpickr-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    color: white;
+    background: rgba(220, 53, 69, 0.85);
+    border-radius: 50%;
+
+    cursor: pointer;
+    z-index: 10;
+
+    box-shadow: 0 0 12px rgba(220, 53, 69, 0.6);
+    transition: all 0.2s ease;
+}
+
+.flatpickr-close-btn:hover {
+    transform: scale(1.15);
+    background: #dc3545;
+    box-shadow: 0 0 18px rgba(220, 53, 69, 0.9);
+}
+
+/* ===============================
+   FLATPICKR - DIAS DA SEMANA (FIX REAL)
+================================ */
+
+/* Container dos dias da semana */
+.flatpickr-weekdays {
+    background: #121212;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Texto: Seg, Ter, Qua... */
+.flatpickr-weekday {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+/* Garante que spans internos não fiquem pretos */
+.flatpickr-weekday span {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+@@media (max-width: 767.98px) {
+    body {
+        padding-top: calc(var(--prime-header-height) + 10px);
+    }
+}
+
+
+</style>
+
+<div class="container py-5">
+    <div class="row mb-5" data-aos="fade-right">
+        <div class="col">
+            <h2 class="display-5 fw-bold"><i class="bi bi-sliders2-vertical text-primary-prime me-3"></i>Painel <span class="text-primary-prime">Agenda</span>Prime</h2>
+        </div>
+    </div>
+
+    @* MENU DE FUNCIONALIDADES *@
+    <div class="d-flex flex-wrap gap-2 mb-4" id="menu-admin-prime" role="tablist">
+        <button  type="button"class= "btn-menu-prime collapsed" data-bs-toggle="collapse" data-bs-target="#collapseIdentificacao">
+            <i class="bi bi-shop-window me-2"></i> Identificação
+        </button>
+        <button  type="button" class="btn-menu-prime collapsed" data-bs-toggle="collapse" data-bs-target="#collapseEquipe">
+            <i class="bi bi-people me-2"></i> Equipe
+        </button>
+        <button  type="button" class="btn-menu-prime collapsed" data-bs-toggle="collapse" data-bs-target="#collapseServicos">
+            <i class="bi bi-scissors me-2"></i> Serviços
+        </button>
+        <button  type="button" class="btn-menu-prime collapsed" data-bs-toggle="collapse" data-bs-target="#collapseAgenda">
+            <i class="bi bi-calendar-check me-2"></i> Agenda
+        </button>
+        <button  type="button" class="btn-menu-prime collapsed" data-bs-toggle="collapse" data-bs-target="#collapseAgendamentos">
+            <i class="bi bi-calendar3 me-2"></i> Agendamentos
+        </button>
+        <button  type="button" class="btn-menu-prime collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFaturamento">
+            <i class="bi bi-cash-stack me-2"></i> Faturamento
+        </button>
+    </div>
+
+    @* CONTEÚDO: IDENTIFICAÇÃO *@
+    <div class="collapse mb-4" id="collapseIdentificacao">
+        <div class="collapse-close d-md-none"
+         role="button"
+         onclick="fecharCollapseMobile(this)">
+        ✕ FECHAR JANELA
+    </div>
+        <div class="card admin-card border-0">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-primary-prime">Identificação da Barbearia</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="row mb-4 pb-3 border-bottom border-white border-opacity-10">
+                    <div class="col-md-6">
+                        <small class="text-white-50 d-block mb-1">EMPRESA ATUAL</small>
+                        <p class="fs-5 fw-bold text-primary-prime mb-0">@(string.IsNullOrEmpty(Model.Nome) ? "Não definido" : Model.Nome)</p>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="text-white-50 d-block mb-1">LOCALIZAÇÃO</small>
+                        <p class="text-white mb-0"><i class="bi bi-geo-alt me-1 text-danger"></i> @(string.IsNullOrEmpty(Model.Endereco) ? "Endereço não cadastrado" : Model.Endereco)</p>
+                    </div>
+                </div>
+                <form asp-action="AtualizarIdentidade" method="post" class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-white-50">ALTERAR NOME</label>
+                        <input type="text" name="nomeBarbearia" class="form-control" value="@Model.Nome" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-white-50">ALTERAR ENDEREÇO</label>
+                        <input type="text" name="endereco" class="form-control" value="@Model.Endereco">
+                    </div>
+                    
+                    <div class="col-12 text-end">
+                        <button  type="button" class="btn btn-prime px-5">Atualizar Identidade</button>
+                    </div>
+                </form>
+
+                <hr class="my-4 border-white border-opacity-10" />
+
+                    <h6 class="fw-bold text-primary-prime mb-3">
+                        Galeria de Cortes
+                    </h6>
+
+                    <form asp-action="UploadGaleria"
+                        method="post"
+                        enctype="multipart/form-data"
+                        class="row g-3"
+                        id="formUploadGaleria">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="col-md-9">
+                            <input type="file"
+                                name="Fotos"
+                                class="form-control"
+                                multiple
+                                accept="image/*"
+                                required />
+                        </div>
+
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-prime w-100">
+                                Adicionar Fotos
+                            </button>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+
+    @* CONTEÚDO: EQUIPE *@
+    <div class="collapse mb-4" id="collapseEquipe">
+        <div class="collapse-close d-md-none"
+         role="button"
+         onclick="fecharCollapseMobile(this)">
+        ✕ FECHAR JANELA
+        </div>
+        <div class="card admin-card border-0">
+            <div class="card-header"><h5 class="mb-0 fw-bold text-primary-prime">Gerenciar Equipe</h5></div>
+            <div class="card-body p-4">
+                <form asp-action="CadastrarFuncionario" method="post" class="row g-3 mb-4">
+                    <div class="col-md-9">
+                        <input type="text" name="Nome" class="form-control input-customizado" placeholder="Nome do profissional" required>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-prime w-100">Adicionar</button>
+                    </div>
+                </form>
+                <table class="table table-borderless text-white align-middle">
+                    <tbody>
+                        @foreach (var func in Model.Funcionarios)
+                        {
+                            // Lógica da imagem (mantém a sua)
+                            string srcFinal = !string.IsNullOrEmpty(func.ImagemPath)
+                                ? func.ImagemPath
+                                : "/images/default-avatar.png";
+
+
+                            <tr class="align-middle border-bottom border-secondary" 
+                                onclick="abrirGerenciamentoFuncionario('@func.Id', '@func.Nome', '@srcFinal')" 
+                                style="cursor: pointer;">
+                                <td style="width: 60px;">
+                                    <img 
+                                        id="img-func-@func.Id"
+                                        src="@srcFinal"
+                                        class="rounded-circle border border-primary-prime" 
+                                        style="width: 45px; height: 45px; object-fit: cover;" 
+                                    />
+                                </td>
+                                <td class="fw-bold">
+                                    @func.Nome
+                                    <small class="text-muted d-block" style="font-size: 0.7rem;">Clique para gerenciar</small>
+                                </td>
+                                <td class="text-end">
+                                    <i class="bi bi-chevron-right text-primary-prime"></i>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalGerenciarFunc" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-primary-prime">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">
+                    <span id="modalNomeFunc">Nome do Funcionário</span>
+                    <button type="button" class="btn btn-link btn-sm text-primary-prime p-0 ms-2" 
+                            onclick="abrirModalEditarNome()">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <div class="position-relative d-inline-block mb-4">
+                    <img src="" id="modalImgFunc" class="rounded-circle border border-primary-prime" 
+                         style="width: 120px; height: 120px; object-fit: cover; cursor: pointer;"
+                         onclick="document.getElementById('modalInputFoto').click()" />
+                    <div class="position-absolute bottom-0 end-0 bg-primary-prime rounded-circle p-2" 
+                         style="cursor: pointer;" onclick="document.getElementById('modalInputFoto').click()">
+                        <i class="bi bi-camera-fill text-white"></i>
+                    </div>
+                </div>
+                
+                <input type="file" id="modalInputFoto" style="display:none" accept="image/*" />
+
+                <input type="hidden" id="modalIdFunc" />
+
+                <div class="d-grid gap-2">
+                    <button  type="button" class="btn btn-outline-light" onclick="document.getElementById('modalInputFoto').click()">
+                        <i class="bi bi-image me-2"></i>Alterar Foto de Perfil
+                    </button>
+                    <hr class="my-3 border-secondary">
+                    <button  type="button" class="btn btn-danger" onclick="excluirFuncionarioModal()">
+                        <i class="bi bi-trash3-fill me-2"></i>Excluir Funcionário
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <form id="form-excluir-global" asp-action="ExcluirFuncionario" method="post">
+        <input type="hidden" name="id" id="input-excluir-id" />
+    </form>
+
+    <div class="modal fade" id="modalGerenciarServico" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Gerenciar Serviço</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="modalServicoId">
+
+        <div class="mb-3">
+          <label>Nome</label>
+          <input type="text" id="modalServicoNome" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label>Preço</label>
+          <input type="number" step="0.01" id="modalServicoPreco" class="form-control">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-danger" onclick="excluirServico()">Excluir</button>
+        <button class="btn btn-primary" onclick="salvarServico()">Salvar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+<form id="form-excluir-serv-global" asp-action="ExcluirServico" method="post">
+    <input type="hidden" name="id" id="input-excluir-serv-id" />
+</form>
+
+    @* CONTEÚDO: SERVIÇOS *@
+   <div class="collapse mb-4" id="collapseServicos">
+
+    <!-- BOTÃO FECHAR (mobile only) -->
+    <div class="collapse-close d-md-none"
+         role="button"
+         aria-label="Fechar janela"
+         onclick="fecharCollapseMobile(this)">
+        ✕ FECHAR JANELA
+    </div>
+
+    <div class="card admin-card border-0">
+        <div class="card-header">
+            <h5 class="mb-0 fw-bold text-primary-prime">Tabela de Serviços</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <form id="formCadastrarServico" asp-action="CadastrarServico" method="post" class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <input type="text" name="NomeServico" class="form-control input-customizado" placeholder="Serviço" required>
+                </div>
+
+                <div class="col-md-3">
+                    <input type="number" name="Preco" class="form-control input-customizado" placeholder="R$" step="0.01" required>
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-prime w-100">
+                        Adicionar
+                    </button>
+                </div>
+            </form>
+
+            <table class="table table-borderless text-white">
+                <tbody>
+                    @foreach (var serv in Model.Servicos)
+                    {
+                        <tr id="row-serv-@serv.Id"
+                            class="align-middle border-bottom border-secondary"
+                            onclick="abrirGerenciamentoServico('@serv.Id', '@serv.Nome', '@serv.Preco.ToString("F2").Replace(",", ".")')"
+                            style="cursor: pointer;">
+                            
+                            <td class="fw-bold py-3">
+                                <span id="span-serv-nome-@serv.Id">@serv.Nome</span>
+                            </td>
+
+                            <td class="text-end pe-4">
+                                <span class="badge bg-primary-prime fw-bold py-2 px-3 text-white">
+                                    R$ <span id="span-serv-preco-@serv.Id">@serv.Preco.ToString("F2")</span>
+                                </span>
+                            </td>
+
+                            <td class="text-end" style="width: 40px;">
+                                <i class="bi bi-chevron-right text-primary-prime"></i>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+    @* CONTEÚDO: CONFIGURAR AGENDA (FORM + REGISTRADAS JUNTOS) *@
+    <div class="collapse mb-4" id="collapseAgenda">
+        <div class="collapse-close d-md-none"
+         role="button"
+         aria-label="Fechar janela"
+         onclick="fecharCollapseMobile(this)">
+        ✕ FECHAR JANELA
+    </div>
+        <div class="row g-4">
+            @* Coluna da Esquerda: Formulário de Edição *@
+            <div class="col-lg-7">
+                <div class="card admin-card border-0 h-100">
+                    <div class="card-header text-primary-prime fw-bold">
+                        <i class="bi bi-pencil-square me-2"></i>AJUSTAR HORÁRIOS
+                    </div>
+                    <div class="card-body p-4">
+                        <form asp-action="ConfigurarAgenda" method="post">
+                            @* Tempo por atendimento *@
+                            <div class="mb-4">
+                                <label class="form-label small text-white-50">TEMPO POR ATENDIMENTO</label>
+                                <select name="IntervaloMinutos" class="form-select input-agenda"> @* Adicionado aqui *@
+                                    <option value="15" selected="@(Model.IntervaloMinutos == 15)">15 Minutos</option>
+                                    <option value="30" selected="@(Model.IntervaloMinutos == 30)">30 Minutos</option>
+                                    <option value="45" selected="@(Model.IntervaloMinutos == 45)">45 Minutos</option>
+                                    <option value="60" selected="@(Model.IntervaloMinutos == 60)">1 Hora</option>
+                                </select>
+                            </div>
+
+                           @* Horário de Funcionamento *@
+                            <div class="row g-3 mb-4">
+                                <div class="col-6">
+                                    <label class="small text-white-50">ABERTURA</label>
+                                    <input type="time" name="HoraAbertura" class="form-control input-agenda" value="@Model.HoraAbertura"> @* Adicionado aqui *@
+                                </div>
+                                <div class="col-6">
+                                    <label class="small text-white-50">FECHAMENTO</label>
+                                    <input type="time" name="HoraFechamento" class="form-control input-agenda" value="@Model.HoraFechamento"> @* Adicionado aqui *@
+                                </div>
+                            </div>
+
+                            @* INTERVALO / ALMOÇO *@
+                            <div class="p-3 mb-4 rounded-3" style="background: rgba(13, 110, 253, 0.05); border: 1px dashed rgba(13, 110, 253, 0.3);">
+                                <label class="small text-primary-prime fw-bold mb-2 d-block"><i class="bi bi-cup-hot me-2"></i>INTERVALO / ALMOÇO</label>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <label class="extra-small text-white-50">INÍCIO</label>
+                                        <input type="time" name="HoraAlmocoInicio" class="form-control form-control-sm input-agenda" value="@Model.HoraAlmocoInicio"> @* Adicionado aqui *@
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="extra-small text-white-50">RETORNO</label>
+                                        <input type="time" name="HoraAlmocoFim" class="form-control form-control-sm input-agenda" value="@Model.HoraAlmocoFim"> @* Adicionado aqui *@
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-prime w-100 py-3">ATUALIZAR CONFIGURAÇÕES</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            @* Coluna da Direita: Resumo do que está no Banco *@
+            <div class="col-lg-5">
+                <div class="card admin-card border-0 h-100">
+                    <div class="card-header text-white-50 small fw-bold">
+                        <i class="bi bi-info-square me-2"></i>CONFIGURAÇÕES REGISTRADAS
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-borderless text-white mb-0">
+                            <tbody>
+                                <tr class="border-bottom border-white border-opacity-10">
+                                    <td class="ps-4 py-3 text-white-50">Intervalo</td>
+                                    <td class="text-end pe-4 py-3 fw-bold text-primary-prime">@Model.IntervaloMinutos min</td>
+                                </tr>
+                                <tr class="border-bottom border-white border-opacity-10">
+                                    <td class="ps-4 py-3 text-white-50">Funcionamento</td>
+                                    <td class="text-end pe-4 py-3 fw-bold">
+                                        @Model.HoraAbertura.ToString(@"hh\:mm") - @Model.HoraFechamento.ToString(@"hh\:mm")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4 py-3 text-white-50">Almoço</td>
+                                    <td class="text-end pe-4 py-3 fw-bold text-warning">
+                                        @Model.HoraAlmocoInicio.ToString(@"hh\:mm") - @Model.HoraAlmocoFim.ToString(@"hh\:mm")
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 text-center pb-4">
+                        <div class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
+                            <i class="bi bi-shield-check me-1"></i> Dados Ativos no Banco
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* CONTEÚDO: LISTA DE AGENDAMENTOS POR PROFISSIONAL *@
+    <div class="collapse mb-4" id="collapseAgendamentos">
+        <div class="collapse-close d-md-none"
+         role="button"
+         aria-label="Fechar janela"
+         onclick="fecharCollapseMobile(this)">
+        ✕ FECHAR JANELA
+    </div>
+        <div class="card admin-card border-0">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-primary-prime">Agenda por Profissional</h5>
+                <span class="badge badge-time px-3 py-2">Hoje: @DateTime.Now.ToString("dd/MM")</span>
+            </div>
+            <div class="card-body p-4">
+
+                @if (Model.Funcionarios != null && Model.Funcionarios.Any())
+                {
+                    @* Navegação de Barbeiros *@
+                    <ul class="nav nav-pills gap-2 mb-4 border-bottom border-white border-opacity-10 pb-3" id="tabs-funcionarios" role="tablist">
+                        @for (int i = 0; i < Model.Funcionarios.Count; i++)
+                        {
+                            var func = Model.Funcionarios[i];
+                            // Criando um ID que o CSS aceite sem erros (ex: f550e8400...)
+                            var safeId = "f" + func.Id.ToString("N");
+
+                            <li class="nav-item" role="presentation">
+                                <button  type="button" class="nav-link @(i == 0 ? "active" : "") btn-outline-primary text-white border border-white border-opacity-10"
+                                        id="tab-@safeId"
+                                        data-bs-toggle="pill"
+                                        data-bs-target="#content-@safeId"
+                                        type="button" role="tab" aria-controls="content-@safeId" aria-selected="@(i == 0 ? "true" : "false")"
+                                        style="border-radius: 12px; transition: 0.3s;">
+                                    <i class="bi bi-person-badge me-2"></i>@func.Nome
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                    @* Filtro de Data *@
+                    <div class="row mb-4" data-aos="fade-up">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-white-50">FILTRAR POR DATA</label>
+                            <div class="input-group">
+                                @* Alterado de bg-dark para bg-light/input-light *@
+                                <span class="input-group-text bg-light border-secondary border-opacity-25 text-primary-prime">
+                                    <i class="bi bi-calendar-event"></i>
+                                </span>
+                                <input type="text"
+                                        id="filtroData"
+                                        class="form-control input-date-prime"
+                                        placeholder="Selecione a data">
+                            </div>
+                        </div>
+                    </div>
+
+                    @* CONTEÚDO DAS AGENDAS *@
+                    <div class="tab-content" id="pills-tabContent">
+                        @for (int i = 0; i < Model.Funcionarios.Count; i++)
+                        {
+                            var func = Model.Funcionarios[i];
+                            var safeId = "f" + func.Id.ToString("N");
+
+                            var agendamentosDoFunc = Model.Agendamentos
+                            .Where(a => a.ProfissionalId == func.Id)
+                            .OrderBy(a => a.Horario)
+                            .ToList();
+
+                            <div class="tab-pane fade @(i == 0 ? "show active" : "")" id="content-@safeId" role="tabpanel" aria-labelledby="tab-@safeId">
+                                <div class="card bg-transparent shadow-sm" style="border-radius: 15px; overflow: hidden;">
+
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        @* 2. Alterado de table-dark para table-agenda-light *@
+                                        <table class="table table-agenda-blue table-hover mb-0">
+                                            <thead>
+                                                @* 3. Alterado de text-secondary para text-muted *@
+                                                <tr class="text-muted border-bottom">
+                                                    <th class="ps-4 py-3 fw-semibold">Horário</th>
+                                                    <th class="py-3 fw-semibold">Cliente</th>
+                                                    <th class="py-3 fw-semibold">Serviço</th>
+                                                    <th class="py-3 fw-semibold text-center">Status</th>
+                                                    <th class="py-3 fw-semibold text-center">Ações</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @* LINHAS DE AGENDAMENTO *@
+                                                    @foreach (var agendamento in agendamentosDoFunc)
+                                                    {
+                                                        <tr class="align-middle border-bottom border-white border-opacity-5 agendamento-row"
+                                                            data-data="@agendamento.Horario.ToString("yyyy-MM-dd")"
+                                                            data-id="@agendamento.Id">
+
+                                                            <td class="ps-4 py-3">
+                                                                <span class="badge badge-horario p-2">
+                                                                    <i class="bi bi-clock me-1"></i>
+                                                                    @agendamento.Horario.ToString(@"hh\:mm")
+                                                                </span>
+                                                            </td>
+
+                                                            <td class="py-3">
+                                                                <div class="fw-bold text-white">
+                                                                    @agendamento.ClienteNome
+                                                                </div>
+                                                                <small class="text-secondary">
+                                                                    @agendamento.ClienteTelefone
+                                                                </small>
+                                                            </td>
+
+                                                            <td class="py-3 text-white-50">
+                                                                @agendamento.ServicoNome
+                                                            </td>
+
+                                                            <td class="py-3 text-center">
+                                                                @if (agendamento.Status == StatusAgendamento.Pendente)
+                                                                {
+                                                                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">
+                                                                        <i class="bi bi-clock me-1"></i> Pendente
+                                                                    </span>
+                                                                }
+                                                                else if (agendamento.Status == StatusAgendamento.Concluido)
+                                                                {
+                                                                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">
+                                                                        <i class="bi bi-check-lg me-1"></i> Finalizado
+                                                                    </span>
+                                                                }
+                                                                else if (agendamento.Status == StatusAgendamento.Cancelado)
+                                                                {
+                                                                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25">
+                                                                        <i class="bi bi-x-lg me-1"></i> Cancelado
+                                                                    </span>
+                                                                }
+                                                            </td>
+                                                            <td class="py-3 text-center acoes-mobile">
+                                                                @if (agendamento.Status == StatusAgendamento.Pendente)
+                                                                {
+                                                                    <button type="button"
+                                                                            class="btn btn-sm btn-primary me-1"
+                                                                            title="Concluir atendimento"
+                                                                            onclick="executarAcaoAgendamento('@agendamento.Id', 'Confirmar')">
+                                                                        <i class="bi bi-check-circle"></i>
+                                                                    </button>
+
+                                                                    <button type="button"
+                                                                            class="btn btn-sm btn-danger"
+                                                                            title="Cancelar agendamento"
+                                                                            onclick="executarAcaoAgendamento('@agendamento.Id', 'Excluir')">
+                                                                        <i class="bi bi-x-circle"></i>
+                                                                    </button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="text-muted small">—</span>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+                                                    @* 🔹 MENSAGEM PADRÃO — SEMPRE EXISTE *@
+                                                    <tr class="sem-agendamento-msg-estatica d-none">
+                                                        <td colspan="4" class="text-center py-5 text-secondary">
+                                                            <i class="bi bi-calendar-x d-block fs-2 mb-2 opacity-50"></i>
+                                                            Nenhum agendamento para este dia.
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info bg-dark border-info text-info border-opacity-25">
+                        <i class="bi bi-info-circle me-2"></i> Cadastre profissionais na aba "Equipe" para visualizar a agenda.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @* CONTEÚDO: FATURAMENTO *@
+    <div class="collapse mb-4" id="collapseFaturamento">
+         <div class="collapse-close d-md-none"
+         role="button"
+         onclick="fecharCollapseMobile(this)">
+        ✕ FECHAR JANELA
+        </div>
+        <div class="card admin-card border-0">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-primary-prime">Relatório Financeiro</h5>
+                <input type="month"
+                    id="mesFaturamento"
+                    class="form-control form-control-sm w-auto input-month-prime">
+            </div>
+
+                <div class="row g-3 mb-4 ">
+                    <div class="col-md-4 filtro-barbeiro-container">
+                        <label class="extra-small text-white-50 select-barbeiro-label">
+                            BARBEIRO
+                        </label>
+
+                        <select id="filtroBarbeiro" class="form-select select-barbeiro-prime">
+                            <option value="todos">Todos os barbeiros</option>
+                            @foreach (var nome in Model.Agendamentos
+                                .Where(x => x.Status == Barbearia.Models.StatusAgendamento.Concluido)
+                                .Select(x => x.FuncionarioNome)
+                                .Distinct())
+                            {
+                                <option value="@nome">@nome</option>
+                            }
+                        </select>
+
+                </div>
+            </div>
+
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3 mb-4 faturamento-cards">
+
+                    <div class="col-12">
+                        <div class="kpi-card kpi-main">
+                            <small>FATURAMENTO DO MÊS</small>
+                            <h2 id="txtTotalMes">R$ 0,00</h2>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="kpi-card kpi-success">
+                            <small>HOJE</small>
+                            <h4 id="txtTotalHoje">R$ 0,00</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="kpi-card kpi-info">
+                            <small>BARBEIRO SELECIONADO</small>
+                            <h4 id="txtTotalBarbeiro">—</h4>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle" id="tabelaFaturamento">
+                        <thead>
+                            <tr class="text-secondary small">
+                                <th>DATA</th>
+                                <th>CLIENTE</th>
+                                <th>SERVIÇO</th>
+                                <th>PROFISSIONAL</th>
+                                <th class="text-end">VALOR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var fat in Model.Agendamentos.Where(x => x.Status == Barbearia.Models.StatusAgendamento.Concluido))
+                            {
+                                <tr class="linha-faturamento"
+                                    data-data="@fat.Horario.ToString("yyyy-MM-dd")"
+                                    data-mes="@fat.Horario.ToString("yyyy-MM")"
+                                    data-valor="@fat.Valor.ToString("F2").Replace(",", ".")" data-barbeiro="@fat.FuncionarioNome">
+                                    
+                                    <td class="small">@fat.Horario.ToString("dd/MM/yyyy")</td>
+                                    <td class="fw-bold">@fat.ClienteNome</td>
+                                    <td><span class="badge bg-primary bg-opacity-10 text-primary">@fat.ServicoNome</span></td>
+                                    <td class="text-white-50">@fat.FuncionarioNome</td>
+                                    <td class="text-end fw-bold text-success">R$ @fat.Valor.ToString("N2")</td>
+                                    
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+
+<script>
+/* =====================================================
+   1️⃣ DOM READY — ÚNICO
+===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+    initAOS();
+    initMenuPrime();
+    initFaturamento();
+    initCadastroServico();
+    initFiltrosData();
+    initGaleria();
+    initModaisFuncionario();
+    initModaisServico();
+    esconderTodosAgendamentos();
+    restaurarEstadoMenu();
+    bindMenuButtons();
+
+    document.querySelectorAll('[data-bs-toggle="pill"]').forEach(btn => {
+        btn.addEventListener("shown.bs.tab", filtrarAgendamentos);
+    });
+
+});
+
+/* =====================================================
+   2️⃣ FUNÇÕES DE INIT (TUDO QUE ACESSA DOM)
+===================================================== */
+
+function initAOS() {
+    AOS.init({ duration: 800 });
+}
+
+/* ---------- MENU PRIME ---------- */
+/* ---------- MENU PRIME (COLLAPSE EXCLUSIVO) ---------- */
+function initMenuPrime() {
+    const botoes = document.querySelectorAll(".btn-menu-prime");
+
+    botoes.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const targetSelector = this.getAttribute("data-bs-target");
+            const target = document.querySelector(targetSelector);
+
+            if (!target) return;
+
+            // Fecha todos os outros
+            document.querySelectorAll(".collapse.show").forEach(collapse => {
+                if (collapse !== target) {
+                    bootstrap.Collapse.getOrCreateInstance(collapse).hide();
+                }
+            });
+
+            // Estado visual dos botões
+            botoes.forEach(b => {
+                if (b !== this) {
+                    b.classList.remove("active");
+                    b.classList.add("collapsed");
+                }
+            });
+
+            // Toggle do atual
+            const instancia = bootstrap.Collapse.getOrCreateInstance(target);
+            const estaAberto = target.classList.contains("show");
+
+            if (!estaAberto) {
+                instancia.show();
+                this.classList.add("active");
+                this.classList.remove("collapsed");
+
+                // Scroll suave para o conteúdo
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+                instancia.hide();
+                this.classList.remove("active");
+                this.classList.add("collapsed");
+            }
+        });
+    });
+}
+
+
+function bindMenuButtons() {
+    document.querySelectorAll('.btn-menu-prime').forEach(button => {
+        button.addEventListener('click', function () {
+            const targetId = this.getAttribute('data-bs-target');
+            salvarEstadoMenu(targetId);
+        });
+    });
+}
+
+/* ---------- FATURAMENTO ---------- */
+function initFaturamento() {
+    const filtroBarbeiro = document.getElementById("filtroBarbeiro");
+    const mesInput = document.getElementById("mesFaturamento");
+
+    if (!mesInput || !filtroBarbeiro) return;
+
+    if (!mesInput.value) {
+        mesInput.value = new Date().toISOString().slice(0, 7);
+    }
+
+    filtroBarbeiro.addEventListener("change", atualizarFaturamento);
+    mesInput.addEventListener("change", atualizarFaturamento);
+
+    atualizarFaturamento();
+}
+
+/* ---------- CADASTRO DE SERVIÇO ---------- */
+function initCadastroServico() {
+    const form = document.getElementById("formCadastrarServico");
+    if (!form) return;
+
+    form.addEventListener("submit", cadastrarServicoAjax);
+}
+
+
+/* ---------- GALERIA ---------- */
+function initGaleria() {
+    const formGaleria = document.getElementById("formUploadGaleria");
+    if (!formGaleria) return;
+
+    formGaleria.addEventListener("submit", uploadGaleriaAjax);
+}
+
+/* ---------- MODAIS ---------- */
+function initModaisFuncionario() {
+    const modal = document.getElementById('modalGerenciarFunc');
+    if (!modal) return;
+
+    // 🚨 IMPORTANTE: antes de instanciar
+    bootstrap.Modal.prototype._enforceFocus = function () {};
+
+    modalGerenciar = new bootstrap.Modal(modal, {
+        focus: false
+    });
+
+    const inputFoto = document.getElementById("modalInputFoto");
+    if (inputFoto) {
+        inputFoto.addEventListener("change", uploadFotoModal);
+    }
+}
+
+
+function initModaisServico() {
+    const modal = document.getElementById('modalGerenciarServico');
+    if (!modal) return;
+
+    bootstrap.Modal.prototype._enforceFocus = function () {};
+    modalServico = new bootstrap.Modal(modal);
+}
+
+/* =====================================================
+   FUNÇÃO DE SERVIÇO: ABRIR MODAL DE GERENCIAMENTO DE SERVIÇO
+===================================================== */
+
+function abrirGerenciamentoServico(id, nome, preco) {
+    document.getElementById("modalServicoId").value = id;
+    document.getElementById("modalServicoNome").value = nome;
+    document.getElementById("modalServicoPreco").value = preco;
+
+    modalServico.show();
+}
+
+/* =====================================================
+   FUNÇÃO DE SERVIÇO: SALVAR
+===================================================== */
+
+async function salvarServico() {
+    const id = document.getElementById("modalServicoId").value;
+    const nome = document.getElementById("modalServicoNome").value;
+    const preco = document.getElementById("modalServicoPreco").value;
+
+    const response = await fetch("/Servicos/EditarServico", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "RequestVerificationToken": document.querySelector(
+                'input[name="__RequestVerificationToken"]'
+            )?.value
+        },
+        body: JSON.stringify({ id, nome, preco })
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        document.getElementById(`span-serv-nome-${id}`).innerText = nome;
+        document.getElementById(`span-serv-preco-${id}`).innerText =
+            parseFloat(preco).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+
+        Swal.fire("Sucesso!", "Serviço atualizado!", "success");
+        modalServico.hide();
+    } else {
+        Swal.fire("Erro", result.message, "error");
+    }
+}
+
+/* =====================================================
+   FUNÇÃO DE SERVIÇO: EXCLUIR
+===================================================== */
+
+async function excluirServico() {
+    const id = document.getElementById("modalServicoId").value;
+
+    const confirm = await Swal.fire({
+        title: "Excluir serviço?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Excluir",
+        background: "#1a1a1a",
+        color: "#fff"
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    await fetch("/Servicos/ExcluirServico", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "RequestVerificationToken": document.querySelector(
+                'input[name="__RequestVerificationToken"]'
+            )?.value
+        },
+        body: JSON.stringify({ id })
+    });
+
+    document.getElementById(`row-serv-${id}`).remove();
+    modalServico.hide();
+
+    Swal.fire("Excluído!", "Serviço removido.", "success");
+}
+
+/* =====================================================
+   3️⃣ FUNÇÕES DE NEGÓCIO (FORA DO DOM)
+===================================================== */
+
+/* ---------- MENU ---------- */
+function salvarEstadoMenu(targetId) {
+    localStorage.setItem('menuAtivoPrime', targetId);
+}
+
+function limparEstadoMenu() {
+    localStorage.removeItem('menuAtivoPrime');
+}
+
+function restaurarEstadoMenu() {
+    const menuSalvo = localStorage.getItem('menuAtivoPrime');
+    if (!menuSalvo) return;
+
+    const targetDiv = document.querySelector(menuSalvo);
+    const btn = document.querySelector(`[data-bs-target="${menuSalvo}"]`);
+
+    if (targetDiv && btn) {
+        bootstrap.Collapse.getOrCreateInstance(targetDiv).show();
+        btn.classList.add('active');
+    }
+}
+
+/* ---------- FATURAMENTO ---------- */
+function atualizarFaturamento() {
+    const filtroBarbeiro = document.getElementById("filtroBarbeiro");
+    const mesInput = document.getElementById("mesFaturamento");
+
+    let totalMes = 0;
+    let totalBarbeiro = 0;
+    let totalHoje = 0;
+
+    const hoje = new Date().toISOString().split("T")[0];
+
+    document.querySelectorAll(".linha-faturamento").forEach(linha => {
+        const mes = linha.dataset.mes;
+        const data = linha.dataset.data;
+        const valor = parseFloat(linha.dataset.valor);
+        const barbeiro = linha.dataset.barbeiro;
+
+        let visivel = mes === mesInput.value;
+
+        if (filtroBarbeiro.value !== "todos") {
+            visivel = visivel && barbeiro === filtroBarbeiro.value;
+        }
+
+        linha.style.display = visivel ? "" : "none";
+
+        if (visivel) {
+            totalMes += valor;
+            if (data === hoje) totalHoje += valor;
+            if (barbeiro === filtroBarbeiro.value) totalBarbeiro += valor;
+        }
+    });
+
+    animarNumero(txtTotalMes, totalMes.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
+    animarNumero(txtTotalHoje, totalHoje.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
+    animarNumero(
+        txtTotalBarbeiro,
+        filtroBarbeiro.value === "todos"
+            ? "—"
+            : totalBarbeiro.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+    );
+}
+
+
+/* ---------- GALERIA ---------- */
+async function uploadGaleriaAjax(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    Swal.fire({
+        title: 'Enviando fotos...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+        background: '#1a1a1a',
+        color: '#fff'
+    });
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'RequestVerificationToken': document.querySelector(
+                    'input[name="__RequestVerificationToken"]'
+                )?.value
+            }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: result.message,
+                timer: 1500,
+                showConfirmButton: false,
+                background: '#1a1a1a',
+                color: '#fff'
+            });
+
+            form.reset();
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Atenção',
+                text: result.message,
+                background: '#1a1a1a',
+                color: '#fff'
+            });
+        }
+
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro!',
+            text: 'Não foi possível enviar as fotos.',
+            background: '#1a1a1a',
+            color: '#fff'
+        });
+    }
+}
+
+
+/* ---------- CADASTRO SERVIÇO ---------- */
+async function cadastrarServicoAjax(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch(form.action, {
+            method: "POST",
+            body: new URLSearchParams(formData),
+            headers: {
+                "RequestVerificationToken": document.querySelector(
+                    'input[name="__RequestVerificationToken"]'
+                )?.value
+            }
+        });
+
+        if (!response.ok) throw new Error();
+
+        const result = await response.json();
+
+        if (result.success) {
+            Swal.fire({
+                icon: "success",
+                title: "Serviço Adicionado!",
+                timer: 1500,
+                showConfirmButton: false,
+                background: "#1a1a1a",
+                color: "#fff"
+            });
+
+            const tbody = document.querySelector("#collapseServicos table tbody");
+
+            const novaLinha = document.createElement("tr");
+            novaLinha.id = `row-serv-${result.id}`;
+            novaLinha.className = "align-middle border-bottom border-secondary";
+            novaLinha.style.cursor = "pointer";
+
+            const precoParaModal = result.preco.replace(",", ".");
+
+            novaLinha.onclick = () =>
+                abrirGerenciamentoServico(result.id, result.nome, precoParaModal);
+
+            novaLinha.innerHTML = `
+                <td class="fw-bold py-3">
+                    <span id="span-serv-nome-${result.id}">
+                        ${result.nome}
+                    </span>
+                </td>
+                <td class="text-end pe-4">
+                    <span class="badge bg-primary-prime fw-bold py-2 px-3 text-white">
+                        R$ <span id="span-serv-preco-${result.id}">
+                            ${parseFloat(result.preco).toLocaleString('pt-br', { minimumFractionDigits: 2 })}
+                        </span>
+                    </span>
+                </td>
+                <td class="text-end" style="width: 40px;">
+                    <i class="bi bi-chevron-right text-primary-prime"></i>
+                </td>
+            `;
+
+            tbody.prepend(novaLinha);
+            form.reset();
+        }
+
+    } catch {
+        Swal.fire("Erro!", "Não foi possível cadastrar o serviço.", "error");
+    }
+}
+
+/* ---------- FLATPICKR ---------- */
+function initFiltrosData() {
+    const inputData = document.getElementById("filtroData");
+    if (!inputData) return;
+
+    flatpickr(inputData, {
+        locale: "pt",
+        altInput: true,
+        altFormat: "d/m/Y",
+        dateFormat: "Y-m-d",
+        disableMobile: true,
+
+        onChange: function (_, dateStr) {
+            dataSelecionadaGlobal = dateStr;
+            filtrarAgendamentos();
+        },
+
+        onReady: function (_, dateStr, instance) {
+            // Botão fechar ❌
+            const closeBtn = document.createElement("div");
+            closeBtn.className = "flatpickr-close-btn";
+            closeBtn.innerHTML = "✕";
+            closeBtn.addEventListener("click", () => instance.close());
+            instance.calendarContainer.appendChild(closeBtn);
+
+            // Aplica filtro inicial (se já houver data)
+            if (dateStr) {
+                filtrarAgendamentos(dateStr);
+            }
+        }
+    });
+}
+
+function filtrarAgendamentos() {
+    const abaAtiva = document.querySelector(".tab-pane.active.show");
+    if (!abaAtiva || !dataSelecionadaGlobal) return;
+
+    const rows = abaAtiva.querySelectorAll(".agendamento-row");
+    const msg = abaAtiva.querySelector(".sem-agendamento-msg-estatica");
+
+    let visiveis = 0;
+
+    rows.forEach(row => {
+        if (row.dataset.data === dataSelecionadaGlobal) {
+            row.style.display = "table-row";
+            visiveis++;
+        } else {
+            row.style.display = "none";
+        }
+    });
+
+    if (msg) {
+        msg.classList.toggle("d-none", visiveis > 0);
+    }
+}
+
+function initFlatpickrMes() {
+    const inputMes = document.getElementById("mesFaturamento");
+    if (!inputMes) return;
+
+    flatpickr(inputMes, {
+        locale: "pt",
+        altInput: true,
+        altFormat: "F / Y",
+        dateFormat: "Y-m",
+        disableMobile: true,
+        plugins: [
+            new monthSelectPlugin({
+                shorthand: true,
+                dateFormat: "Y-m",
+                altFormat: "F / Y"
+            })
+        ],
+        onChange: function () {
+            if (typeof atualizarFaturamento === "function") {
+                atualizarFaturamento();
+            }
+        }
+    });
+}
+
+/* ---------- ANIMAÇÃO ---------- */
+function animarNumero(el, valorFinal) {
+    if (!el) return;
+    el.style.opacity = "0.4";
+    setTimeout(() => {
+        el.innerText = valorFinal;
+        el.style.opacity = "1";
+    }, 150);
+}
+
+/* =====================================================
+   Funcões auxiliares de menu prime
+===================================================== */
+
+function abrirAbaMenuPrime(id) {
+    document.querySelectorAll(".menu-prime-collapse").forEach(collapse => {
+        if (collapse.id !== id) {
+            collapse.classList.remove("show");
+        }
+    });
+}
+
+
+/* =====================================================
+   🔴 FECHAR COLLAPSE NO MOBILE (SCRIPT ANTIGO)
+===================================================== */
+
+function fecharCollapseMobile(el) {
+    const collapse = el.closest(".collapse");
+    if (!collapse) return;
+
+    bootstrap.Collapse.getOrCreateInstance(collapse).hide();
+
+    // Limpa estado salvo
+    limparEstadoMenu();
+
+    // Remove estado ativo dos botões
+    document.querySelectorAll(".btn-menu-prime").forEach(btn => {
+        btn.classList.remove("active");
+        btn.classList.add("collapsed");
+    });
+}
+
+/* =====================================================
+   🔴 FUNCIONÁRIO — ABRIR MODAL (SCRIPT ANTIGO)
+===================================================== */
+
+function abrirGerenciamentoFuncionario(id, nome, fotoSrc) {
+    document.getElementById("modalIdFunc").value = id;
+    document.getElementById("modalNomeFunc").innerText = nome;
+
+    const img = document.getElementById("modalImgFunc");
+    if (img && fotoSrc) img.src = fotoSrc;
+
+    modalGerenciar.show();
+}
+
+
+/* =====================================================
+   🔴 FUNCIONÁRIO — UPLOAD FOTO NO MODAL
+===================================================== */
+
+async function uploadFotoModal() {
+    const input = document.getElementById("modalInputFoto");
+    const id = document.getElementById("modalIdFunc").value;
+
+    if (!input || !input.files || !input.files.length) return;
+
+    const file = input.files[0];
+
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("foto", file);
+
+    Swal.fire({
+        title: "Enviando foto...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+        background: "#1a1a1a",
+        color: "#fff"
+    });
+
+    try {
+        const response = await fetch("/Servicos/AtualizarFotoFuncionario", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "RequestVerificationToken": document.querySelector(
+                    'input[name="__RequestVerificationToken"]'
+                )?.value
+            }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // Atualiza a imagem do modal
+            document.getElementById("modalImgFunc").src = result.fotoUrl;
+
+            // 🔥 Atualiza a imagem da lista
+            const imgLista = document.getElementById(`img-func-${id}`);
+            if (imgLista) {
+                imgLista.src = result.fotoUrl;
+            }
+
+            Swal.fire("Sucesso!", "Foto atualizada.", "success");
+        }
+        else {
+            Swal.fire("Erro", result.message || "Falha ao atualizar foto.", "error");
+        }
+
+    } catch (err) {
+        Swal.fire("Erro", "Falha ao enviar foto.", "error");
+    } finally {
+        // 🔥 ESSENCIAL — sempre limpar
+        input.value = "";
+    }
+}
+
+/* =====================================================
+   🔴 FUNCIONÁRIO — EDITAR NOME (SCRIPT ANTIGO)
+===================================================== */
+
+function abrirModalEditarNome() {
+    const id = document.getElementById("modalIdFunc").value;
+    const nomeAtual = document.getElementById("modalNomeFunc").innerText;
+
+    Swal.fire({
+        title: "Editar nome",
+        input: "text",
+        inputValue: nomeAtual,
+        showCancelButton: true,
+        confirmButtonText: "Salvar",
+        background: "#1a1a1a",
+        color: "#fff",
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.getInput().focus();
+        }
+    }).then(async result => {
+        if (!result.isConfirmed || !result.value.trim()) return;
+
+        try {
+            const response = await fetch("/Servicos/EditarNomeFuncionario", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": document.querySelector(
+                        'input[name="__RequestVerificationToken"]'
+                    )?.value
+                },
+                body: JSON.stringify({
+                    id: id,
+                    nome: result.value
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Atualiza o nome no modal
+                document.getElementById("modalNomeFunc").innerText = result.value;
+
+                // 🔥 Atualiza o nome na lista
+                const spanLista = document.getElementById(`span-func-nome-${id}`);
+                if (spanLista) spanLista.innerText = result.value;
+
+                Swal.fire("Sucesso!", "Nome atualizado.", "success");
+            } else {
+                Swal.fire("Erro", data.message || "Erro ao atualizar.", "error");
+            }
+
+        } catch {
+            Swal.fire("Erro", "Não foi possível atualizar.", "error");
+        }
+    });
+}
+
+/* =====================================================
+   🔴 FUNCIONÁRIO — EXCLUIR 
+===================================================== */
+
+function excluirFuncionarioModal() {
+    const id = document.getElementById("modalIdFunc").value;
+
+    Swal.fire({
+        title: "Excluir funcionário?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Excluir",
+        background: "#1a1a1a",
+        color: "#fff"
+    }).then(result => {
+        if (!result.isConfirmed) return;
+
+        document.getElementById("input-excluir-id").value = id;
+        document.getElementById("form-excluir-global").submit();
+    });
+}
+
+/* =====================================================
+    🔴 AGENDA — ESCONDER TODOS OS AGENDAMENTOS 
+===================================================== */
+function esconderTodosAgendamentos() {
+    const abaAtiva = document.querySelector(".tab-pane.active.show");
+    if (!abaAtiva) return;
+
+    abaAtiva.querySelectorAll(".agendamento-row").forEach(row => {
+        row.style.display = "none";
+    });
+
+    const msg = abaAtiva.querySelector(".sem-agendamento-msg-estatica");
+    if (msg) {
+        msg.classList.remove("d-none");
+    }
+}
+
+
+/* =====================================================
+    🔴 AGENDA — EXECUTAR AÇÃO (CONFIRMAR OU EXCLUIR)
+===================================================== */
+
+async function executarAcaoAgendamento(id, acao) {
+    let titulo = "";
+    let texto = "";
+    let url = "";
+
+    if (acao === "Confirmar") {
+        titulo = "Confirmar agendamento?";
+        texto = "Este agendamento será marcado como concluído.";
+        url = "/Servicos/ConfirmarAgendamento";
+    }
+
+    if (acao === "Excluir") {
+        titulo = "Cancelar agendamento?";
+        texto = "Este agendamento será cancelado permanentemente.";
+        url = "/Servicos/CancelarAgendamento";
+    }
+
+    const confirm = await Swal.fire({
+        title: titulo,
+        text: texto,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sim",
+        cancelButtonText: "Não",
+        background: "#1a1a1a",
+        color: "#fff"
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": document.querySelector(
+                    'input[name="__RequestVerificationToken"]'
+                )?.value
+            },
+            body: JSON.stringify({ id })
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            Swal.fire("Erro", result.message || "Falha ao executar ação.", "error");
+            return;
+        }
+
+        // 🔥 Atualização visual
+        const row = document.querySelector(`tr[data-id="${id}"]`);
+
+        if (acao === "Excluir") {
+            const tds = row.querySelectorAll("td");
+
+            const tdStatus = tds[3]; // coluna STATUS
+            const tdAcoes = tds[4];  // coluna AÇÕES
+
+            tds[3].innerHTML = `
+                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25">
+                    <i class="bi bi-x-lg me-1"></i> Cancelado
+                </span>
+            `;
+
+            tds[4].innerHTML = `<span class="text-muted small">—</span>`;
+        }
+
+        if (acao === "Confirmar") {
+            const tds = row.querySelectorAll("td");
+
+            const tdStatus = tds[3]; // coluna STATUS
+            const tdAcoes = tds[4];  // coluna AÇÕES
+
+            tdStatus.innerHTML = `
+                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">
+                    <i class="bi bi-check-lg me-1"></i> Finalizado
+                </span>
+            `;
+
+            tdAcoes.innerHTML = `<span class="text-muted small">—</span>`;
+        }
+
+        Swal.fire("Sucesso!", result.message, "success");
+
+    } catch (err) {
+        Swal.fire("Erro", "Erro de comunicação com o servidor.", "error");
+    }
+}
+
+/* =====================================================
+   AGENDA — REAPLICAR FILTRO AO TROCAR DE PROFISSIONAL
+===================================================== */
+document.querySelectorAll('[data-bs-toggle="pill"]').forEach(btn => {
+    btn.addEventListener("shown.bs.tab", () => {
+        filtrarAgendamentos();
+    });
+});
+
+/* =====================================================
+   4️⃣ VARIÁVEIS GLOBAIS CONTROLADAS
+===================================================== */
+let modalGerenciar;
+let modalServico;
+let dataSelecionadaGlobal = null;
+
+
+</script>

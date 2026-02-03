@@ -1,0 +1,490 @@
+﻿@model Barbearia.Models.ViewsModels.ContatoViewModel
+@{
+    ViewData["Title"] = "AgendaPrime - Transforme seu Salão";
+    Layout = "_Layout";
+}
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm custom-nav">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="#">
+            <i class="bi bi-scissors me-2 animate-scissors"></i>AGENDA<span class="text-white">PRIME</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item dropdown dropdown-hover">
+                    <a class="nav-link px-3 hover-underline" href="#funcionalidades" id="navFunc" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Funcionalidades
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark shadow-lg animate slideIn" aria-labelledby="navFunc">
+                        <li><a class="dropdown-item py-2" href="#funcionalidades"><i class="bi bi-graph-up me-2 text-primary"></i> Gerenciar Ganhos</a></li>
+                        <li><a class="dropdown-item py-2" href="#funcionalidades"><i class="bi bi-calendar3 me-2 text-primary"></i> Ver Agendamentos</a></li>
+                        <li><a class="dropdown-item py-2" href="#funcionalidades"><i class="bi bi-bell me-2 text-primary"></i> Notificações Real-time</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item"><a class="nav-link px-3 hover-underline" href="#sobre">Sobre Nós</a></li>
+                <li class="nav-item"><a class="nav-link px-3 hover-underline" href="#contato">Contato</a></li>
+                <li class="nav-item ms-lg-3">
+                    <a asp-controller="Login" asp-action="Index" class="btn btn-primary px-4 fw-bold btn-glow">
+                        <i class="bi bi-person-fill me-2"></i>Área do Barbeiro
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="hero-section text-white d-flex align-items-center">
+    <div class="container text-center" data-aos="fade-up" data-aos-duration="1000">
+        <span class="badge rounded-pill badge-social mb-4">
+            <i class="bi bi-patch-check-fill me-2"></i>+500 BARBEARIAS POTENCIALIZADAS
+        </span>
+
+        <h1 class="display-3 fw-bold mb-3 tracking-in-expand">Gestão Inteligente para sua Barbearia</h1>
+        <p class="lead mb-5 fs-4 text-light">Elimine as filas de espera e organize sua agenda de forma automática e profissional.</p>
+    </div>
+</header>
+
+<section id="funcionalidades" class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5" data-aos="fade-down">
+            <h2 class="fw-bold display-5">Tudo o que você precisa</h2>
+            <div class="divider-custom mx-auto"></div>
+            <p class="text-muted mt-3">Desenvolvido especificamente para o fluxo de trabalho do barbeiro moderno.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4 text-center" data-aos="zoom-in" data-aos-delay="300">
+                <div class="p-5 card h-100 border-0 shadow-lg modern-card">
+                    <div class="icon-box mb-4">
+                        <i class="bi bi-lightning-charge-fill text-primary display-4"></i>
+                    </div>
+                    <div class="badge bg-primary bg-opacity-10 text-primary mb-2 rounded-pill">Exclusivo AgendaPrime</div>
+                    <h4 class="fw-bold">Leilão de Vagas</h4>
+                    <p class="text-muted">Nossa IA preenche cancelamentos de última hora com leilões automáticos, garantindo que você nunca perca dinheiro.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center" data-aos="zoom-in" data-aos-delay="300">
+                <div class="p-5 card h-100 border-0 shadow-lg modern-card">
+                    <div class="icon-box mb-4">
+                        <i class="bi bi-graph-up-arrow text-primary display-4"></i>
+                    </div>
+                    <h4 class="fw-bold">Gestão Financeira</h4>
+                    <p class="text-muted">Controle seus ganhos diários, mensais e a comissão de cada colaborador de forma automática.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center" data-aos="zoom-in" data-aos-delay="500">
+                <div class="p-5 card h-100 border-0 shadow-lg modern-card">
+                    <div class="icon-box mb-4">
+                        <i class="bi bi-geo-alt text-primary display-4"></i>
+                    </div>
+                    <h4 class="fw-bold">Página Exclusiva</h4>
+                    <p class="text-muted">Sua barbearia terá um link próprio com endereço no mapa e fotos dos seus melhores cortes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="sobre" class="py-5 overflow-hidden">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                <div class="image-stack">
+                    <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=800&q=80" class="img-fluid rounded-4 shadow-2xl main-img" alt="Barbearia">
+                </div>
+            </div>
+            <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                <h2 class="fw-bold display-5 mb-4">Quem Somos</h2>
+                <p class="fs-5 text-muted mb-4">Somos uma empresa focada em tecnologia para o setor de estética masculina. Nosso objetivo é simplificar a conexão entre o barbeiro e o cliente.</p>
+
+                <div class="feature-list mt-4">
+                    <div class="d-flex align-items-center mb-3 p-3 rounded-3 bg-light hover-feature">
+                        <i class="bi bi-check-circle-fill text-primary fs-4 me-3"></i>
+                        <span class="fw-bold">Varios clientes satisfeitos</span>
+                    </div>
+                    <div class="d-flex align-items-center p-3 rounded-3 bg-light hover-feature">
+                        <i class="bi bi-headset text-primary fs-4 me-3"></i>
+                        <span class="fw-bold">Suporte técnico especializado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contato" class="py-5 bg-dark text-white glass-section">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-up">
+                <h2 class="fw-bold display-5 mb-4">Fale com nossa equipe</h2>
+                <p class="opacity-75 fs-5">Dúvidas sobre os planos? Estamos aqui para ajudar.</p>
+                <div class="contact-info mt-5">
+                    <div class="d-flex align-items-center mb-4 contact-item">
+                        <div class="icon-circle me-3"><i class="bi bi-whatsapp"></i></div>
+                        <span>(17) 99266-4042</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-4 contact-item">
+                        <div class="icon-circle me-3"><i class="bi bi-envelope"></i></div>
+                        <span>contato@agendaprime.com.br</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="flip-right">
+                <div class="p-4 rounded-4 bg-white bg-opacity-10 backdrop-blur border border-white border-opacity-20 shadow-xl">
+                    <form id="formContato">
+                        <div class="form-floating mb-3 text-dark">
+                            <input asp-for="Nome" class="form-control" placeholder="Seu Nome">
+                            <label asp-for="Nome">Seu Nome</label>
+                            <span asp-validation-for="Nome" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-3 text-dark">
+                            <input asp-for="Email" class="form-control" placeholder="Seu E-mail">
+                            <label asp-for="Email">Seu E-mail</label>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-4 text-dark">
+                            <textarea asp-for="Mensagem" class="form-control" style="height: 120px" placeholder="Mensagem"></textarea>
+                            <label asp-for="Mensagem">Como podemos ajudar?</label>
+                            <span asp-validation-for="Mensagem" class="text-danger small"></span>
+                        </div>
+
+                        <button type="submit" id="btnEnviar" class="btn btn-primary btn-lg w-100 fw-bold shadow">
+                            Enviar Mensagem <i class="bi bi-send ms-2"></i>
+                        </button>
+                    </form>
+
+                    <div id="resultadoEnvio" class="mt-3" style="display:none;"></div>
+                    @if (TempData["MensagemSucesso"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["MensagemSucesso"]</div>
+                    }
+                    @if (TempData["MensagemErro"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["MensagemErro"]</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="py-4 bg-black text-center text-white-50 border-top border-secondary">
+    <div class="container">
+        <p class="mb-0">© 2024 AgendaPrime - Sistema de Agendamento Profissional.</p>
+    </div>
+</footer>
+
+<style>
+    .bg-dark {
+        background-color: var(--dark-bg) !important;
+    }
+    :root {
+        --dark-bg: #0f1115; /* Cinza quase preto, mais moderno que o dark padrão */
+        --accent-blue: #0d6efd;
+        --neon-glow: rgba(13, 110, 253, 0.5);
+    }
+    /* Configurações Gerais */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    main[role="main"] {
+        padding: 0 !important;
+    }
+
+    #funcionalidades .container, #sobre .container, #contato .container, nav .container, footer .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 0 1rem;
+    }
+
+    #contato {
+        background-color: var(--dark-bg) !important;
+    }
+
+    .icon-circle:hover {
+        background: #00d4ff;
+        box-shadow: 0 0 15px var(--neon-glow);
+        transition: all 0.3s ease;
+    }
+
+    /* Hero Section com Parallax */
+    .hero-section {
+        background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1350&q=80');
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        height: 85vh;
+        width: 100%;
+    }
+
+    /* Efeitos de Texto */
+    .tracking-in-expand {
+        animation: tracking-in-expand 1s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+    }
+
+    @@keyframes tracking-in-expand {
+        0% {
+            letter-spacing: -0.5em;
+            opacity: 0;
+        }
+
+        40% {
+            opacity: 0.6;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    /* Navbar Efeito */
+    .custom-nav {
+        backdrop-filter: blur(15px) saturate(180%);
+        -webkit-backdrop-filter: blur(15px) saturate(180%);
+        background-color: rgba(15, 17, 21, 0.8) !important; /* Usando sua var --dark-bg com transparência */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .hover-underline {
+        position: relative;
+    }
+
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #0d6efd;
+            transition: width 0.3s;
+        }
+
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+
+    /* Botão com Brilho (Glow) */
+    .btn-glow:hover {
+        box-shadow: 0 0 15px rgba(13, 110, 253, 0.7);
+        transform: scale(1.05);
+    }
+
+    /* Cards Modernos */
+    .modern-card {
+        position: relative;
+        background: #fff;
+        border-radius: 20px;
+        z-index: 1;
+        overflow: visible; /* Para o brilho aparecer */
+    }
+
+        .modern-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+            background: #fff;
+        }
+
+        .modern-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, var(--accent-blue), #00d4ff, var(--accent-blue));
+            z-index: -1;
+            border-radius: 21px;
+            opacity: 0;
+            transition: opacity 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .modern-card:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 20px var(--neon-glow);
+        }
+
+    .badge-social {
+        background: rgba(13, 110, 253, 0.1);
+        color: var(--accent-blue);
+        border: 1px solid rgba(13, 110, 253, 0.2);
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .btn-primary, .btn-outline-light {
+        border-radius: 50px !important;
+        padding-left: 35px !important;
+        padding-right: 35px !important;
+    }
+
+    .icon-box {
+        transition: all 0.3s;
+    }
+
+    .modern-card:hover .icon-box {
+        transform: scale(1.2) rotate(10deg);
+    }
+
+    /* Divisor Personalizado */
+    .divider-custom {
+        height: 4px;
+        width: 60px;
+        background: #0d6efd;
+        border-radius: 2px;
+    }
+
+    /* Glassmorphism */
+    .backdrop-blur {
+        backdrop-filter: blur(15px);
+    }
+
+    .icon-circle {
+        width: 45px;
+        height: 45px;
+        background: #0d6efd;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+
+    /* Animação Tesoura */
+    .animate-scissors {
+        display: inline-block;
+        transition: transform 0.5s;
+    }
+
+    .navbar-brand:hover .animate-scissors {
+        transform: rotate(45deg);
+    }
+
+    /* Efeito Feature List */
+    .hover-feature {
+        transition: all 0.3s;
+        border: 1px solid transparent;
+    }
+
+        .hover-feature:hover {
+            background: #fff !important;
+            border-color: #0d6efd;
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+    /* Efeito de Hover no Dropdown */
+    @@media (min-width: 992px) {
+        .dropdown-hover:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu {
+            display: block;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            transform: translateY(10px);
+            border-top: 3px solid #0d6efd; /* Linha azul no topo do menu */
+        }
+    }
+
+    /* Estilização dos itens do menu suspenso */
+    .dropdown-item {
+        transition: all 0.2s ease;
+        font-weight: 500;
+    }
+
+        .dropdown-item:hover {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd !important;
+            transform: translateX(5px);
+        }
+
+    /* Animação suave para o dropdown */
+    .animate {
+        animation-duration: 0.3s;
+        -webkit-animation-duration: 0.3s;
+        animation-fill-mode: both;
+        -webkit-animation-fill-mode: both;
+    }
+
+    @@keyframes slideIn {
+        0% {
+            transform: translateY(1rem);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(0rem);
+            opacity: 1;
+        }
+    }
+
+    .slideIn {
+        animation-name: slideIn;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    // Inicializa AOS
+    AOS.init({
+        once: false,     // Permite que a animação aconteça toda vez que o elemento aparecer
+        mirror: true,    // Opcional: faz com que o elemento anime também ao "subir" a página
+        duration: 800,   // Opcional: velocidade da animação em milissegundos
+        offset: 120      // Opcional: distância (em px) para iniciar a animação
+    });
+
+    $(document).ready(function () {
+        $('#formContato').submit(function (e) {
+            e.preventDefault(); // Agora o jQuery vai reconhecer este comando
+
+            var $form = $(this);
+            var btn = $('#btnEnviar');
+            var resultado = $('#resultadoEnvio');
+
+            // Feedback visual
+            btn.prop('disabled', true).html('Enviando... <span class="spinner-border spinner-border-sm"></span>');
+
+            $.ajax({
+                url: '@Url.Action("EnviarContato", "Home")', // Usa o helper do ASP.NET para garantir a rota
+                type: 'POST',
+                data: $form.serialize(),
+                success: function (response) {
+                    resultado.hide().fadeIn().html('<div class="alert ' + (response.success ? 'alert-success' : 'alert-danger') + '">' + response.message + '</div>');
+
+                    if (response.success) {
+                        $form[0].reset();
+                        setTimeout(function() {
+                            resultado.fadeOut();
+                        }, 5000);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    resultado.hide().fadeIn().html('<div class="alert alert-danger">Erro técnico ao enviar. Verifique o console.</div>');
+                },
+                complete: function () {
+                    btn.prop('disabled', false).html('Enviar Mensagem <i class="bi bi-send ms-2"></i>');
+                }
+            });
+        });
+    });
+</script>
