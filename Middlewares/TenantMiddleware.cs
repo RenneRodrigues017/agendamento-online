@@ -16,9 +16,12 @@ namespace Barbearia.Middlewares
 
         public async Task InvokeAsync(HttpContext context, AppDbContext _appDbContext, ITenant tenant)
         {
-            // Ignora busca de tenant para arquivos estáticos (evita overload no banco)
-            var path = context.Request.Path.Value?.ToLower();
-            if (path.Contains(".css") || path.Contains(".js") || path.Contains(".png") || path.Contains(".jpg"))
+            var path = context.Request.Path.Value?.ToLower() ?? "";
+
+            // 1. Pular lógica de banco para arquivos estáticos E para a tela de LOGIN
+            if (path.Contains(".css") || path.Contains(".js") || 
+                path.Contains(".png") || path.Contains(".jpg") ||
+                path == "/login" || path == "/login/index") // Adicionada a rota de login
             {
                 await _next(context);
                 return;
