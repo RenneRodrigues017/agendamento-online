@@ -18,22 +18,32 @@ namespace Barbearia.Middlewares
         {
             var path = context.Request.Path.Value?.ToLower() ?? "";
 
-            // 1. Pular lógica de banco para arquivos estáticos E para a tela de LOGIN
-            if (path.Contains(".css") || path.Contains(".js") || 
-                path.Contains(".png") || path.Contains(".jpg") ||
-                path == "/login" || path == "/login/index") // Adicionada a rota de login
+            if (
+                path.StartsWith("/css") ||
+                path.StartsWith("/js") ||
+                path.StartsWith("/lib") ||
+                path.StartsWith("/images") ||
+                path.StartsWith("/login") ||
+                path.StartsWith("/account") ||
+                path.StartsWith("/usuario/cadastrarbarbeiro")
+            )
             {
                 await _next(context);
                 return;
             }
+
 
             Guid? tenantIdEncontrado = null;
             string nomeTenantEncontrado = null;
 
             // 1. TENTATIVA PELA URL (Subdomínio)
             var host = context.Request.Host.Host;
-            var tenantIdentifier = host.Split('.')[0].ToLower();
+            string tenantIdentifier = "";
 
+            if (host.Contains(".")) {
+                var parts = host.Split('.');
+                tenantIdentifier = parts[0].ToLower();
+            }
             // Adicionado AsNoTracking() e TagWith para facilitar debug no log do SQL
             var tenantPelaUrl = await _appDbContext.TenantModels
                 .AsNoTracking()

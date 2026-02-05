@@ -1,4 +1,5 @@
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\Barbearia.exe
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\publish\web.config
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\web.config
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\web.config
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\web.config
@@ -25,6 +26,11 @@ C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\Barbearia.deps.json
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\Barbearia.runtimeconfig.json
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\Barbearia.staticwebassets.endpoints.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\publish\appsettings.Development.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\publish\appsettings.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\publish\Barbearia.deps.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\publish\Barbearia.runtimeconfig.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\publish\publish\publish\publish\publish\Barbearia.staticwebassets.endpoints.json
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\Barbearia.dll
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\Barbearia.runtimeconfig.json
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\publish\Barbearia.pdb

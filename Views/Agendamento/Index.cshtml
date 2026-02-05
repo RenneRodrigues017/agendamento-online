@@ -339,7 +339,29 @@
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
         }
+.quero-ser-prime {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.2rem;
+    user-select: none;
+}
+
+.texto-branco {
+    color: #ffffff;
+}
+
+.texto-azul {
+    color: #0d6efd; /* azul Bootstrap */
+}
+.agendamento-card {
+    padding: 20px;
+    margin-bottom: 16px;
 </style>
+
+<a href="@Url.Action("Index", "Home")" class="quero-ser-prime">
+    <span class="texto-branco">Quero Ser</span>
+    <span class="texto-azul"> Prime</span>
+</a>
 
 <div class="container py-5">
     <div class="text-center mb-5" data-aos="fade-down">

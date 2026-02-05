@@ -21,7 +21,6 @@ public class UsuarioController : Controller
 
     // POST: Recebe o formulário e chama o Service
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CadastrarBarbeiro(BarbeiroRegisterViewModel model)
     {
         if (!ModelState.IsValid)
@@ -29,17 +28,24 @@ public class UsuarioController : Controller
             return View(model);
         }
 
-        var (sucesso, erro) = await _usuarioService.CadastrarBarbeiroDonoAsync(model);
+        try
+        {
+            var (sucesso, erro) = await _usuarioService.CadastrarBarbeiroDonoAsync(model);
 
-        if (sucesso)
-        {
-            TempData["SuccessMessage"] = "Barbeiro cadastrado com sucesso!";
-            return RedirectToAction("Index", "Login");
+            if (sucesso)
+            {
+                TempData["SuccessMessage"] = "Barbeiro cadastrado com sucesso!";
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, erro);
+                return View(model);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            ModelState.AddModelError(string.Empty, erro);
-            return View(model);
+            return Content($"Erro interno: {ex.Message}\n{ex.StackTrace}");
         }
     }
 }

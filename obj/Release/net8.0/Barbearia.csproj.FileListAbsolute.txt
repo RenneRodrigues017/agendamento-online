@@ -167,3 +167,15 @@ C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publi
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\Barbearia.deps.json
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\Barbearia.runtimeconfig.json
 C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\Barbearia.staticwebassets.endpoints.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\web.config
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\appsettings.Development.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\appsettings.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\Barbearia.deps.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\Barbearia.runtimeconfig.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\Barbearia.staticwebassets.endpoints.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\publish\web.config
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\publish\appsettings.Development.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\publish\appsettings.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\publish\Barbearia.deps.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\publish\Barbearia.runtimeconfig.json
+C:\Users\renne\OneDrive\Desktop\Renne\Barbearia\bin\Release\net8.0\publish\publish\publish\publish\publish\publish\Barbearia.staticwebassets.endpoints.json
